@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AuctionHub - Discover Unique Treasures</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    .hero-overlay {
+      background-color: rgba(0, 0, 0, 0.6);
+    }
+    .nav-link {
+      position: relative;
+    }
+    .nav-link:after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -2px;
+      left: 0;
+      background-color: #3B82F6;
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover:after {
+      width: 100%;
+    }
+    .auction-card {
+      transition: all 0.3s ease;
+    }
+    .auction-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+    .category-chip {
+      transition: all 0.2s ease;
+    }
+    .category-chip:hover {
+      transform: scale(1.05);
+      background-color: #3B82F6;
+      color: white;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+  <!-- Header -->
+  <header class="bg-gray-900 text-white sticky top-0 z-50 shadow-lg">
+    <div class="container mx-auto px-4 py-3">
+      <div class="flex justify-between items-center">
+        <div class="flex items-center space-x-2">
+          <i class="fas fa-gavel text-blue-400 text-2xl"></i>
+          <a href="index.html" class="text-2xl font-bold">Auction<span class="text-blue-400">Hub</span></a>
+        </div>
+        
+        <!-- Mobile menu button -->
+        <button id="mobile-menu-button" class="md:hidden text-white focus:outline-none">
+          <i class="fas fa-bars text-xl"></i>
+        </button>
+        
+        <!-- Desktop Navigation -->
+        <nav class="hidden md:block">
+          <ul class="flex space-x-6">
+            <li><a href="index.html" class="nav-link text-blue-400 font-medium">Home</a></li>
+            <li><a href="./src/pages/auction.html" class="nav-link hover:text-blue-400">Auctions</a></li>
+            <li><a href="./src/pages/sell.html" class="nav-link hover:text-blue-400">Sell</a></li>
+            <li><a href="./src/pages/dashboard.html" class="nav-link hover:text-blue-400">Dashboard</a></li>
+            <li class="ml-4">
+              <div class="flex space-x-4">
+                <a href="./src/pages/login.html" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg transition-colors duration-300">
+                  <i class="fas fa-sign-in-alt mr-2"></i>Login
+                </a>
+                <a href="./src/pages/register.html" class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg transition-colors duration-300">
+                  <i class="fas fa-user-plus mr-2"></i>Register
+                </a>
+              </div>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      
+      <!-- Mobile Navigation -->
+      <div id="mobile-menu" class="hidden md:hidden mt-4 pb-4">
+        <ul class="space-y-3">
+          <li><a href="index.html" class="block py-2 px-4 bg-gray-800 rounded">Home</a></li>
+          <li><a href="./src/pages/auction.html" class="block py-2 px-4 hover:bg-gray-800 rounded">Auctions</a></li>
+          <li><a href="./src/pages/sell.html" class="block py-2 px-4 hover:bg-gray-800 rounded">Sell</a></li>
+          <li><a href="./src/pages/dashboard.html" class="block py-2 px-4 hover:bg-gray-800 rounded">Dashboard</a></li>
+          <li class="pt-2">
+            <div class="grid grid-cols-2 gap-3">
+              <a href="./src/pages/login.html" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg text-center transition-colors duration-300">
+                Login
+              </a>
+              <a href="./src/pages/register.html" class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg text-center transition-colors duration-300">
+                Register
+              </a>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="relative bg-gray-900 text-white py-32" style="background-image: url('./assests/images/auction\ 2.avif'); background-size: cover; background-position: center;">
+    <div class="hero-overlay absolute inset-0"></div>
+    <div class="container mx-auto px-4 relative z-10">
+      <div class="max-w-3xl mx-auto text-center">
+        <h1 class="text-4xl md:text-5xl font-bold mb-6">Discover <span class="text-blue-400">Unique Treasures</span> at Amazing Prices</h1>
+        <p class="text-xl mb-8">Bid on exclusive items from around the world or sell your own valuables to our global community.</p>
+        
+        <form class="flex flex-col md:flex-row justify-center max-w-2xl mx-auto">
+          <div class="relative flex-grow mb-4 md:mb-0">
+            <input type="text" placeholder="Search for items, categories, or sellers..." 
+                  class="w-full px-6 py-4 rounded-l-lg md:rounded-r-none focus:outline-none text-gray-800">
+            <button type="button" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 md:hidden">
+              <i class="fas fa-search"></i>
+            </button>
+          </div>
+          <button type="submit" class="bg-blue-600 hover:bg-blue-700 px-8 py-4 rounded-r-lg md:rounded-l-none transition-colors duration-300">
+            <i class="fas fa-search mr-2"></i> Search Auctions
+          </button>
+        </form>
+        
+        <div class="mt-8 flex flex-wrap justify-center gap-3">
+          <a href="#" class="bg-white/10 hover:bg-blue-600 px-4 py-2 rounded-full transition-colors duration-300">
+            <i class="fas fa-camera mr-2"></i> Photography
+          </a>
+          <a href="#" class="bg-white/10 hover:bg-blue-600 px-4 py-2 rounded-full transition-colors duration-300">
+            <i class="fas fa-tshirt mr-2"></i> Fashion
+          </a>
+          <a href="#" class="bg-white/10 hover:bg-blue-600 px-4 py-2 rounded-full transition-colors duration-300">
+            <i class="fas fa-laptop mr-2"></i> Electronics
+          </a>
+          <a href="#" class="bg-white/10 hover:bg-blue-600 px-4 py-2 rounded-full transition-colors duration-300">
+            <i class="fas fa-home mr-2"></i> Home & Garden
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Auctions -->
+  <section class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="flex justify-between items-center mb-12">
+        <h2 class="text-3xl font-bold">Featured <span class="text-blue-600">Auctions</span></h2>
+        <a href="./src/pages/auction.html" class="text-blue-600 hover:text-blue-800 font-medium">
+          View All <i class="fas fa-arrow-right ml-1"></i>
+        </a>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <!-- Auction Item 1 -->
+        <div class="auction-card bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
+          <div class="relative">
+            <img src="https://source.unsplash.com/random/400x300/?vintage,camera" alt="Vintage Camera" class="w-full h-48 object-cover">
+            <div class="absolute top-3 right-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
+              <i class="fas fa-bolt mr-1"></i> HOT
+            </div>
+            <div class="absolute bottom-3 left-3 bg-black/70 text-white text-sm px-2 py-1 rounded">
+              <i class="fas fa-clock mr-1"></i> 2h 30m left
+            </div>
+          </div>
+          <div class="p-5">
+            <h3 class="text-xl font-semibold mb-2">Vintage Camera Collection</h3>
+            <p class="text-gray-600 mb-4">Classic 35mm film cameras from the 1970s</p>
+            <div class="flex justify-between items-center">
+              <div>
+                <p class="text-sm text-gray-500">Current Bid</p>
+                <p class="text-xl font-bold text-blue-600">$125.00</p>
+              </div>
+              <a href="#" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors duration-300">
+                Bid Now
+              </a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Auction Item 2 -->
+        <div class="auction-card bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
+          <div class="relative">
+            <img src="https://source.unsplash.com/random/400x300/?smartwatch" alt="Smart Watch" class="w-full h-48 object-cover">
+            <div class="absolute bottom-3 left-3 bg-black/70 text-white text-sm px-2 py-1 rounded">
+              <i class="fas fa-clock mr-1"></i> 1h 45m left
+            </div>
+          </div>
+          <div class="p-5">
+            <h3 class="text-xl font-semibold mb-2">Latest Smart Watch</h3>
+            <p class="text-gray-600 mb-4">Brand new with all features included</p>
+            <div class="flex justify-between items-center">
+              <div>
+                <p class="text-sm text-gray-500">Current Bid</p>
+                <p class="text-xl font-bold text-blue-600">$189.00</p>
+              </div>
+              <a href="#" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors duration-300">
+                Bid Now
+              </a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Auction Item 3 -->
+        <div class="auction-card bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
+          <div class="relative">
+            <img src="https://source.unsplash.com/random/400x300/?painting" alt="Art Painting" class="w-full h-48 object-cover">
+            <div class="absolute top-3 right-3 bg-yellow-500 text-white text-xs font-bold px-2 py-1 rounded">
+              <i class="fas fa-star mr-1"></i> PREMIUM
+            </div>
+            <div class="absolute bottom-3 left-3 bg-black/70 text-white text-sm px-2 py-1 rounded">
+              <i class="fas fa-clock mr-1"></i> 5h 20m left
+            </div>
+          </div>
+          <div class="p-5">
+            <h3 class="text-xl font-semibold mb-2">Original Landscape Painting</h3>
+            <p class="text-gray-600 mb-4">Oil on canvas by contemporary artist</p>
+            <div class="flex justify-between items-center">
+              <div>
+                <p class="text-sm text-gray-500">Current Bid</p>
+                <p class="text-xl font-bold text-blue-600">$450.00</p>
+              </div>
+              <a href="#" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors duration-300">
+                Bid Now
+              </a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Auction Item 4 -->
+        <div class="auction-card bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
+          <div class="relative">
+            <img src="https://source.unsplash.com/random/400x300/?furniture" alt="Modern Sofa" class="w-full h-48 object-cover">
+            <div class="absolute bottom-3 left-3 bg-black/70 text-white text-sm px-2 py-1 rounded">
+              <i class="fas fa-clock mr-1"></i> 3d 12h left
+            </div>
+          </div>
+          <div class="p-5">
+            <h3 class="text-xl font-semibold mb-2">Modern Leather Sofa</h3>
+            <p class="text-gray-600 mb-4">Like new condition, premium Italian leather</p>
+            <div class="flex justify-between items-center">
+              <div>
+                <p class="text-sm text-gray-500">Current Bid</p>
+                <p class="text-xl font-bold text-blue-600">$320.00</p>
+              </div>
+              <a href="#" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors duration-300">
+                Bid Now
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Categories Section -->
+  <section class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl font-bold text-center mb-12">Browse by <span class="text-blue-600">Categories</span></h2>
+      
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
+        <!-- Category 1 -->
+        <a href="#" class="category-chip bg-white rounded-lg shadow-sm p-6 text-center hover:shadow-md transition-all duration-300">
+          <div class="bg-blue-100 w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-3">
+            <i class="fas fa-laptop text-blue-600 text-2xl"></i>
+          </div>
+          <h3 class="font-semibold">Electronics</h3>
+          <p class="text-sm text-gray-500 mt-1">1,245 items</p>
+        </a>
+        
+        <!-- Category 2 -->
+        <a href="#" class="category-chip bg-white rounded-lg shadow-sm p-6 text-center hover:shadow-md transition-all duration-300">
+          <div class="bg-green-100 w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-3">
+            <i class="fas fa-tshirt text-green-600 text-2xl"></i>
+          </div>
+          <h3 class="font-semibold">Fashion</h3>
+          <p class="text-sm text-gray-500 mt-1">892 items</p>
+        </a>
+        
+        <!-- Category 3 -->
+        <a href="#" class="category-chip bg-white rounded-lg shadow-sm p-6 text-center hover:shadow-md transition-all duration-300">
+          <div class="bg-yellow-100 w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-3">
+            <i class="fas fa-home text-yellow-600 text-2xl"></i>
+          </div>
+          <h3 class="font-semibold">Home & Garden</h3>
+          <p class="text-sm text-gray-500 mt-1">1,567 items</p>
+        </a>
+        
+        <!-- Category 4 -->
+        <a href="#" class="category-chip bg-white rounded-lg shadow-sm p-6 text-center hover:shadow-md transition-all duration-300">
+          <div class="bg-purple-100 w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-3">
+            <i class="fas fa-car text-purple-600 text-2xl"></i>
+          </div>
+          <h3 class="font-semibold">Vehicles</h3>
+          <p class="text-sm text-gray-500 mt-1">342 items</p>
+        </a>
+        
+        <!-- Category 5 -->
+        <a href="#" class="category-chip bg-white rounded-lg shadow-sm p-6 text-center hover:shadow-md transition-all duration-300">
+          <div class="bg-red-100 w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-3">
+            <i class="fas fa-book text-red-600 text-2xl"></i>
+          </div>
+          <h3 class="font-semibold">Collectibles</h3>
+          <p class="text-sm text-gray-500 mt-1">756 items</p>
+        </a>
+        
+        <!-- Category 6 -->
+        <a href="#" class="category-chip bg-white rounded-lg shadow-sm p-6 text-center hover:shadow-md transition-all duration-300">
+          <div class="bg-indigo-100 w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-3">
+            <i class="fas fa-paint-brush text-indigo-600 text-2xl"></i>
+          </div>
+          <h3 class="font-semibold">Art</h3>
+          <p class="text-sm text-gray-500 mt-1">423 items</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl font-bold text-center mb-16">How Auction<span class="text-blue-600">Hub</span> Works</h2>
+      
+      <div class="grid md:grid-cols-3 gap-10">
+        <!-- Step 1 -->
+        <div class="text-center">
+          <div class="bg-blue-100 w-20 h-20 mx-auto rounded-full flex items-center justify-center mb-6 text-blue-600 text-3xl font-bold">
+            1
+          </div>
+          <h3 class="text-xl font-semibold mb-3">Register & Explore</h3>
+          <p class="text-gray-600">Create your free account and browse thousands of unique items across hundreds of categories.</p>
+        </div>
+        
+        <!-- Step 2 -->
+        <div class="text-center">
+          <div class="bg-blue-100 w-20 h-20 mx-auto rounded-full flex items-center justify-center mb-6 text-blue-600 text-3xl font-bold">
+            2
+          </div>
+          <h3 class="text-xl font-semibold mb-3">Bid or Buy Now</h3>
+          <p class="text-gray-600">Place your bids on items you love or use the Buy Now option for immediate purchase.</p>
+        </div>
+        
+        <!-- Step 3 -->
+        <div class="text-center">
+          <div class="bg-blue-100 w-20 h-20 mx-auto rounded-full flex items-center justify-center mb-6 text-blue-600 text-3xl font-bold">
+            3
+          </div>
+          <h3 class="text-xl font-semibold mb-3">Win & Celebrate</h3>
+          <p class="text-gray-600">If you have the winning bid, complete your purchase and enjoy your new treasure!</p>
+        </div>
+      </div>
+      
+      <div class="text-center mt-16">
+        <a href="./src/pages/register.html" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-lg transition-colors duration-300">
+          <i class="fas fa-user-plus mr-2"></i> Join Now - It's Free
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl font-bold text-center mb-12">What Our <span class="text-blue-600">Community</span> Says</h2>
+      
+      <div class="grid md:grid-cols-3 gap-8">
+        <!-- Testimonial 1 -->
+        <div class="bg-white p-8 rounded-xl shadow-sm">
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 rounded-full overflow-hidden mr-4">
+              <img src="https://randomuser.me/api/portraits/women/43.jpg" alt="Sarah J." class="w-full h-full object-cover">
+            </div>
+            <div>
+              <h4 class="font-semibold">Sarah J.</h4>
+              <div class="flex text-yellow-400">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+              </div>
+            </div>
+          </div>
+          <p class="text-gray-600">"I've found incredible vintage pieces for my collection at prices I couldn't believe. The bidding process is so exciting!"</p>
+        </div>
+        
+        <!-- Testimonial 2 -->
+        <div class="bg-white p-8 rounded-xl shadow-sm">
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 rounded-full overflow-hidden mr-4">
+              <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Michael T." class="w-full h-full object-cover">
+            </div>
+            <div>
+              <h4 class="font-semibold">Michael T.</h4>
+              <div class="flex text-yellow-400">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+              </div>
+            </div>
+          </div>
+          <p class="text-gray-600">"Sold my antique watch collection for 30% more than local dealers offered. The global audience makes all the difference."</p>
+        </div>
+        
+        <!-- Testimonial 3 -->
+        <div class="bg-white p-8 rounded-xl shadow-sm">
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 rounded-full overflow-hidden mr-4">
+              <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Priya K." class="w-full h-full object-cover">
+            </div>
+            <div>
+              <h4 class="font-semibold">Priya K.</h4>
+              <div class="flex text-yellow-400">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star-half-alt"></i>
+              </div>
+            </div>
+          </div>
+          <p class="text-gray-600">"The mobile notifications keep me updated on my bids, and the secure payment system gives me peace of mind."</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action -->
+  <section class="py-20 bg-blue-600 text-white">
+    <div class="container mx-auto px-4 text-center">
+      <h2 class="text-3xl md:text-4xl font-bold mb-6">Ready to Start Your Auction Journey?</h2>
+      <p class="text-xl mb-8 max-w-2xl mx-auto">Join thousands of happy buyers and sellers in our vibrant community today.</p>
+      <div class="flex flex-col sm:flex-row justify-center gap-4">
+        <a href="./src/pages/register.html" class="bg-white hover:bg-gray-100 text-blue-600 font-bold py-4 px-8 rounded-lg transition-colors duration-300">
+          <i class="fas fa-user-plus mr-2"></i> Sign Up Free
+        </a>
+        <a href="./src/pages/sell.html" class="bg-blue-800 hover:bg-blue-900 font-bold py-4 px-8 rounded-lg transition-colors duration-300">
+          <i class="fas fa-gavel mr-2"></i> Start Selling
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-white pt-16 pb-8">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
+        <!-- About -->
+        <div>
+          <div class="flex items-center mb-4">
+            <i class="fas fa-gavel text-blue-400 text-2xl mr-2"></i>
+            <h3 class="text-xl font-bold">Auction<span class="text-blue-400">Hub</span></h3>
+          </div>
+          <p class="text-gray-400 mb-4">The premier online auction platform connecting buyers and sellers worldwide since 2023.</p>
+          <div class="flex space-x-4">
+            <a href="#" class="text-gray-400 hover:text-white text-xl transition-colors duration-300">
+              <i class="fab fa-facebook"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white text-xl transition-colors duration-300">
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white text-xl transition-colors duration-300">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white text-xl transition-colors duration-300">
+              <i class="fab fa-pinterest"></i>
+            </a>
+          </div>
+        </div>
+        
+        <!-- Quick Links -->
+        <div>
+          <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+          <ul class="space-y-2">
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">About Us</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">How It Works</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Testimonials</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Careers</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Blog</a></li>
+          </ul>
+        </div>
+        
+        <!-- Help -->
+        <div>
+          <h4 class="text-lg font-semibold mb-4">Help & Support</h4>
+          <ul class="space-y-2">
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">FAQs</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Contact Us</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Shipping Info</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Returns Policy</a></li>
+            <li><a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Payment Methods</a></li>
+          </ul>
+        </div>
+        
+        <!-- Newsletter -->
+        <div>
+          <h4 class="text-lg font-semibold mb-4">Newsletter</h4>
+          <p class="text-gray-400 mb-4">Subscribe to get updates on new auctions and special offers.</p>
+          <form class="flex">
+            <input type="email" placeholder="Your email" class="flex-grow px-4 py-2 rounded-l-lg focus:outline-none text-gray-800">
+            <button type="submit" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-r-lg transition-colors duration-300">
+              <i class="fas fa-paper-plane"></i>
+            </button>
+          </form>
+        </div>
+      </div>
+      
+      <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+        <p class="text-gray-400 mb-4 md:mb-0">&copy; 2023 AuctionHub. All rights reserved.</p>
+        <div class="flex space-x-6">
+          <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Privacy Policy</a>
+          <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Terms of Service</a>
+          <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300">Sitemap</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu toggle
+    document.getElementById('mobile-menu-button').addEventListener('click', function() {
+      const menu = document.getElementById('mobile-menu');
+      menu.classList.toggle('hidden');
+    });
+  </script>
+</body>
+</html>
